@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANGEL BLESS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Space+Mono:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #000000;
+    --white: #ffffff;
+    --silver: #c0c0c0;
+    --gray-dim: #888888;
+    --gray-ghost: #333333;
+    --gray-faint: #1a1a1a;
+    --serif: 'EB Garamond', 'Cormorant Garamond', Georgia, serif;
+    --mono: 'Space Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--serif);
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── UTILITY ─── */
+  .hidden { display: none !important; }
+  .mono { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; }
+  .silver { color: var(--silver); }
+  .dim { color: var(--gray-dim); }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 2px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--gray-ghost); }
+
+  /* ─── HEADER ─── */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2.5rem;
+    background: rgba(0,0,0,0.92);
+    border-bottom: 1px solid var(--gray-ghost);
+  }
+
+  .site-title {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .header-nav {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .header-nav a, .header-nav button {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-dim);
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0;
+  }
+  .header-nav a:hover, .header-nav button:hover { color: var(--white); }
+
+  /* ─── PAGE WRAPPER ─── */
+  .page { padding-top: 80px; min-height: 100vh; }
+
+  /* ─── PUBLIC BLOG ─── */
+  #public-blog {}
+
+  /* Hero */
+  .hero {
+    padding: 7rem 2.5rem 5rem;
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--silver);
+    margin-bottom: 2.5rem;
+  }
+  .hero-title {
+    font-size: clamp(2.8rem, 8vw, 5.5rem);
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    color: var(--white);
+  }
+  .hero-sub {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--gray-dim);
+    letter-spacing: 0.04em;
+  }
+  .hero-divider {
+    width: 1px;
+    height: 60px;
+    background: var(--gray-ghost);
+    margin: 3rem auto 0;
+  }
+
+  /* Post Grid */
+  .posts-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2.5rem 6rem;
+  }
+  .posts-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--silver);
+    border-bottom: 1px solid var(--gray-ghost);
+    padding-bottom: 0.75rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 4rem 3rem;
+  }
+
+  /* post card */
+  .post-card {
+    cursor: pointer;
+  }
+  .post-card-img {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 1.5rem;
+    filter: grayscale(20%) contrast(1.05);
+    transition: filter 0.4s;
+    background: var(--gray-faint);
+  }
+  .post-card:hover .post-card-img { filter: grayscale(0%) contrast(1.1); }
+  .post-card-img.no-image {
+    background: var(--gray-faint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-ghost);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+  }
+
+  .post-card-meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--gray-dim);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .post-card-title {
+    font-size: 1.2rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+    color: var(--white);
+    margin-bottom: 0.6rem;
+  }
+  .post-card-excerpt {
+    font-size: 0.9rem;
+    color: var(--gray-dim);
+    font-style: italic;
+    line-height: 1.6;
+  }
+  .no-posts-msg {
+    color: var(--gray-dim);
+    font-style: italic;
+    text-align: center;
+    padding: 5rem 0;
+    font-size: 0.95rem;
+    grid-column: 1/-1;
+  }
+
+  /* ─── SINGLE POST ─── */
+  #single-post-view { display: none; }
+  .single-post-page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 4rem 2.5rem 8rem;
+  }
+  .single-back {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray-dim);
+    cursor: pointer;
+    margin-bottom: 3rem;
+    display: inline-block;
+    transition: color 0.2s;
+  }
+  .single-back:hover { color: var(--white); }
+
+  .single-post-header {
+    margin-bottom: 3rem;
+  }
+  .single-post-date {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--silver);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .single-post-title {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1.15;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+  .single-post-desc-header {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--silver);
+    line-height: 1.65;
+    border-left: 1px solid var(--gray-ghost);
+    padding-left: 1.5rem;
+  }
+
+  .single-post-hero-img {
+    width: 100%;
+    max-height: 680px;
+    object-fit: cover;
+    display: block;
+    margin: 2.5rem 0;
+    filter: grayscale(10%) contrast(1.05);
+  }
+
+  .single-post-body {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: var(--silver);
+  }
+  .single-post-body p { margin-bottom: 1.4em; }
+
+  /* ─── ADMIN: PASSWORD GATE ─── */
+  #admin-gate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 80px);
+    padding: 2rem;
+  }
+  .gate-box {
+    max-width: 340px;
+    width: 100%;
+    text-align: center;
+  }
+  .gate-symbol {
+    font-size: 2rem;
+    letter-spacing: 0.3em;
+    color: var(--silver);
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+  .gate-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray-dim);
+    margin-bottom: 1.5rem;
+  }
+  .gate-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--gray-ghost);
+    color: var(--white);
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    padding: 0.6rem 0;
+    text-align: center;
+    outline: none;
+    margin-bottom: 2rem;
+    transition: border-color 0.2s;
+  }
+  .gate-input:focus { border-bottom-color: var(--silver); }
+  .gate-btn {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: none;
+    border: 1px solid var(--gray-ghost);
+    color: var(--white);
+    padding: 0.75rem 2.5rem;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .gate-btn:hover { border-color: var(--silver); color: var(--silver); }
+  .gate-error {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: #888;
+    margin-top: 1.2rem;
+    font-style: italic;
+  }
+
+  /* ─── ADMIN PANEL ─── */
+  #admin-panel { display: none; padding: 3rem 2.5rem; max-width: 1100px; margin: 0 auto; }
+
+  .admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--gray-ghost);
+    padding-bottom: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .admin-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--silver);
+  }
+  .admin-logout {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-dim);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .admin-logout:hover { color: var(--white); }
+
+  /* Admin layout */
+  .admin-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  @media (max-width: 750px) { .admin-layout { grid-template-columns: 1fr; } }
+
+  /* Post list sidebar */
+  .admin-sidebar {}
+  .sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+  .sidebar-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray-dim);
+  }
+  .new-post-btn {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: none;
+    border: 1px solid var(--gray-ghost);
+    padding: 0.4rem 0.9rem;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .new-post-btn:hover { border-color: var(--silver); }
+
+  .post-list { display: flex; flex-direction: column; gap: 0; }
+  .post-list-item {
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--gray-faint);
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .post-list-item:hover { opacity: 0.75; }
+  .post-list-item.active { border-left: 1px solid var(--silver); padding-left: 0.75rem; margin-left: -0.75rem; }
+  .pli-title {
+    font-size: 0.88rem;
+    color: var(--white);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0.2rem;
+  }
+  .pli-meta {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--gray-dim);
+    text-transform: uppercase;
+  }
+  .pli-draft { color: #666; font-style: italic; }
+  .no-posts-admin {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--gray-dim);
+    padding: 1rem 0;
+    font-style: italic;
+  }
+
+  /* Editor area */
+  .admin-editor {}
+  .editor-form {}
+  .form-row { margin-bottom: 1.75rem; }
+  .form-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray-dim);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  .form-input, .form-textarea, .form-select {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--gray-ghost);
+    color: var(--white);
+    font-family: var(--serif);
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    outline: none;
+    transition: border-color 0.2s;
+    line-height: 1.5;
+  }
+  .form-input:focus, .form-textarea:focus, .form-select:focus {
+    border-bottom-color: var(--silver);
+  }
+  .form-textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+  .form-select {
+    appearance: none;
+    cursor: pointer;
+    background: var(--black);
+  }
+  option { background: #111; }
+
+  /* Image upload */
+  .img-upload-zone {
+    border: 1px solid var(--gray-ghost);
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    position: relative;
+  }
+  .img-upload-zone:hover { border-color: var(--silver); }
+  .img-upload-zone input[type="file"] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+  .upload-hint {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--gray-dim);
+    text-transform: uppercase;
+  }
+  .img-preview {
+    max-width: 100%;
+    max-height: 220px;
+    object-fit: contain;
+    display: block;
+    margin: 0.75rem auto 0;
+  }
+
+  /* Form actions */
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--gray-faint);
+  }
+  .btn {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: none;
+    border: 1px solid;
+    padding: 0.65rem 1.6rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-white { border-color: var(--white); color: var(--white); }
+  .btn-white:hover { background: var(--white); color: var(--black); }
+  .btn-dim { border-color: var(--gray-ghost); color: var(--gray-dim); }
+  .btn-dim:hover { border-color: var(--silver); color: var(--silver); }
+  .btn-danger { border-color: #444; color: #666; }
+  .btn-danger:hover { border-color: #888; color: var(--white); }
+
+  .save-status {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: var(--silver);
+    text-transform: uppercase;
+    font-style: italic;
+    margin-left: auto;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--gray-ghost);
+    padding: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-brand {
+    font-family: var(--serif);
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gray-dim);
+  }
+  .footer-copy {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--gray-ghost);
+    text-transform: uppercase;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    header { padding: 1.2rem 1.25rem; }
+    .hero { padding: 5rem 1.25rem 3.5rem; }
+    .posts-section { padding: 0 1.25rem 4rem; }
+    .posts-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .single-post-page { padding: 2.5rem 1.25rem 5rem; }
+    #admin-panel { padding: 2rem 1.25rem; }
+    footer { padding: 2rem 1.25rem; }
+    .form-actions { flex-direction: column; align-items: flex-start; }
+    .save-status { margin-left: 0; }
+  }
+
+  /* ─── NOISE TEXTURE overlay (subtle) ─── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 999;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.35;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════ HEADER ═══════ -->
+<header>
+  <span class="site-title" onclick="goHome()">Angel Bless</span>
+  <nav class="header-nav">
+    <a onclick="goHome()" href="#">Archive</a>
+    <button id="admin-nav-btn" onclick="showAdminArea()">∴ admin</button>
+  </nav>
+</header>
+
+<!-- ═══════ MAIN PAGE ═══════ -->
+<main class="page">
+
+  <!-- PUBLIC BLOG -->
+  <div id="public-blog">
+
+    <!-- HOME VIEW -->
+    <div id="home-view">
+      <div class="hero">
+        <p class="hero-eyebrow">Fashion Archive · Est. MMXXV</p>
+        <h1 class="hero-title">Angel<br>Bless</h1>
+        <p class="hero-sub">somewhere between heaven and underground</p>
+        <div class="hero-divider"></div>
+      </div>
+
+      <section class="posts-section">
+        <p class="posts-label">Latest</p>
+        <div class="posts-grid" id="posts-grid">
+          <p class="no-posts-msg">No transmissions yet.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- SINGLE POST VIEW -->
+    <div id="single-post-view">
+      <div class="single-post-page">
+        <span class="single-back" onclick="goHome()">← Back to archive</span>
+        <header class="single-post-header">
+          <p class="single-post-date" id="sp-date"></p>
+          <h1 class="single-post-title" id="sp-title"></h1>
+          <p class="single-post-desc-header" id="sp-desc"></p>
+        </header>
+        <img class="single-post-hero-img hidden" id="sp-img" src="" alt="">
+        <div class="single-post-body" id="sp-body"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ADMIN AREA -->
+  <div id="admin-area" class="hidden">
+
+    <!-- Password Gate -->
+    <div id="admin-gate">
+      <div class="gate-box">
+        <div class="gate-symbol">✦</div>
+        <p class="gate-label">Access restricted</p>
+        <input class="gate-input" type="password" id="pw-input" placeholder="enter password"
+          onkeydown="if(event.key==='Enter') checkPw()">
+        <br>
+        <button class="gate-btn" onclick="checkPw()">Enter</button>
+        <p class="gate-error hidden" id="gate-error">incorrect. try again.</p>
+      </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="admin-panel">
+      <div class="admin-header">
+        <span class="admin-title">Angel Bless — Control Room</span>
+        <button class="admin-logout" onclick="logout()">Logout</button>
+      </div>
+
+      <div class="admin-layout">
+
+        <!-- Sidebar: post list -->
+        <aside class="admin-sidebar">
+          <div class="sidebar-header">
+            <span class="sidebar-label">Posts</span>
+            <button class="new-post-btn" onclick="newPost()">+ New</button>
+          </div>
+          <div class="post-list" id="admin-post-list">
+            <p class="no-posts-admin">No posts yet.</p>
+          </div>
+        </aside>
+
+        <!-- Editor -->
+        <section class="admin-editor">
+          <div class="editor-form" id="editor-empty">
+            <p style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; color: var(--gray-dim); text-transform: uppercase; padding: 2rem 0;">
+              Select a post or create a new one.
+            </p>
+          </div>
+
+          <form class="editor-form hidden" id="editor-form" onsubmit="return false;">
+            <input type="hidden" id="edit-id">
+
+            <div class="form-row">
+              <label class="form-label">Title</label>
+              <input class="form-input" type="text" id="edit-title" placeholder="Post title">
+            </div>
+
+            <div class="form-row">
+              <label class="form-label">Description / Excerpt</label>
+              <textarea class="form-textarea" id="edit-desc" placeholder="A short description or excerpt…"></textarea>
+            </div>
+
+            <div class="form-row">
+              <label class="form-label">Body Text</label>
+              <textarea class="form-textarea" id="edit-body" placeholder="Write the full post body here…" style="min-height: 200px;"></textarea>
+            </div>
+
+            <div class="form-row">
+              <label class="form-label">Date</label>
+              <input class="form-input" type="date" id="edit-date">
+            </div>
+
+            <div class="form-row">
+              <label class="form-label">Status</label>
+              <select class="form-select" id="edit-status">
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <label class="form-label">Cover Image</label>
+              <div class="img-upload-zone" id="upload-zone">
+                <input type="file" accept="image/*" id="img-file-input" onchange="handleImageUpload(event)">
+                <p class="upload-hint">Click to upload image</p>
+                <img class="img-preview hidden" id="img-preview" src="" alt="preview">
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn btn-dim" onclick="saveDraft()">Save Draft</button>
+              <button class="btn btn-white" onclick="publishPost()">Publish</button>
+              <button class="btn btn-danger" onclick="deletePost()">Delete</button>
+              <span class="save-status hidden" id="save-status"></span>
+            </div>
+
+          </form>
+        </section>
+
+      </div>
+    </div>
+
+  </div><!-- /admin-area -->
+
+</main>
+
+<!-- FOOTER -->
+<footer id="site-footer">
+  <span class="footer-brand">Angel Bless</span>
+  <span class="footer-copy">All rights reserved · Private Archive</span>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════
+//  ANGEL BLESS — APPLICATION
+// ═══════════════════════════════════════════════
+
+// ─── CONFIG ───────────────────────────────────
+// Change this password to whatever you want
+const ADMIN_PASSWORD = 'angelbless2025';
+const STORAGE_KEY = 'angelbless_posts';
+
+// ─── STATE ────────────────────────────────────
+let isAdmin = false;
+let posts = [];
+let currentEditId = null;
+
+// ─── STORAGE ──────────────────────────────────
+function loadPosts() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    posts = raw ? JSON.parse(raw) : [];
+  } catch(e) { posts = []; }
+}
+
+function savePosts() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+}
+
+// ─── ID GENERATION ───────────────────────────
+function genId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2);
+}
+
+// ─── FORMAT DATE ─────────────────────────────
+function fmtDate(d) {
+  if (!d) return '';
+  const dt = new Date(d + 'T00:00:00');
+  return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+function todayISO() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+// ─── NAVIGATION ──────────────────────────────
+function goHome() {
+  document.getElementById('public-blog').classList.remove('hidden');
+  document.getElementById('home-view').classList.remove('hidden');
+  document.getElementById('single-post-view').style.display = 'none';
+  document.getElementById('admin-area').classList.add('hidden');
+  renderPublicGrid();
+  window.scrollTo(0, 0);
+}
+
+function showAdminArea() {
+  document.getElementById('public-blog').classList.add('hidden');
+  document.getElementById('admin-area').classList.remove('hidden');
+  if (isAdmin) {
+    document.getElementById('admin-gate').classList.add('hidden');
+    document.getElementById('admin-panel').style.display = 'block';
+    renderAdminList();
+  } else {
+    document.getElementById('admin-gate').classList.remove('hidden');
+    document.getElementById('admin-panel').style.display = 'none';
+  }
+  window.scrollTo(0, 0);
+}
+
+// ─── AUTH ─────────────────────────────────────
+function checkPw() {
+  const val = document.getElementById('pw-input').value;
+  const err = document.getElementById('gate-error');
+  if (val === ADMIN_PASSWORD) {
+    isAdmin = true;
+    document.getElementById('admin-gate').classList.add('hidden');
+    document.getElementById('admin-panel').style.display = 'block';
+    renderAdminList();
+    document.getElementById('pw-input').value = '';
+    err.classList.add('hidden');
+  } else {
+    err.classList.remove('hidden');
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+
+function logout() {
+  isAdmin = false;
+  currentEditId = null;
+  goHome();
+}
+
+// ─── PUBLIC GRID ─────────────────────────────
+function renderPublicGrid() {
+  const grid = document.getElementById('posts-grid');
+  const published = posts
+    .filter(p => p.status === 'published')
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  if (published.length === 0) {
+    grid.innerHTML = '<p class="no-posts-msg">No transmissions yet.</p>';
+    return;
+  }
+
+  grid.innerHTML = published.map(post => `
+    <article class="post-card" onclick="openPost('${post.id}')">
+      ${post.image
+        ? `<img class="post-card-img" src="${post.image}" alt="${escHtml(post.title)}">`
+        : `<div class="post-card-img no-image"><span>No Image</span></div>`
+      }
+      <p class="post-card-meta">${fmtDate(post.date)}</p>
+      <h2 class="post-card-title">${escHtml(post.title)}</h2>
+      ${post.desc ? `<p class="post-card-excerpt">${escHtml(post.desc)}</p>` : ''}
+    </article>
+  `).join('');
+}
+
+function openPost(id) {
+  const post = posts.find(p => p.id === id);
+  if (!post || post.status !== 'published') return;
+
+  document.getElementById('home-view').classList.add('hidden');
+  document.getElementById('single-post-view').style.display = 'block';
+
+  document.getElementById('sp-date').textContent = fmtDate(post.date);
+  document.getElementById('sp-title').textContent = post.title;
+  document.getElementById('sp-desc').textContent = post.desc || '';
+
+  const img = document.getElementById('sp-img');
+  if (post.image) {
+    img.src = post.image;
+    img.classList.remove('hidden');
+  } else {
+    img.classList.add('hidden');
+  }
+
+  const body = document.getElementById('sp-body');
+  if (post.body) {
+    body.innerHTML = post.body
+      .split('\n\n')
+      .filter(s => s.trim())
+      .map(s => `<p>${escHtml(s).replace(/\n/g, '<br>')}</p>`)
+      .join('');
+  } else {
+    body.innerHTML = '';
+  }
+
+  window.scrollTo(0, 0);
+}
+
+// ─── ADMIN LIST ──────────────────────────────
+function renderAdminList() {
+  const list = document.getElementById('admin-post-list');
+  const sorted = [...posts].sort((a, b) => new Date(b.date || b.id) - new Date(a.date || a.id));
+
+  if (sorted.length === 0) {
+    list.innerHTML = '<p class="no-posts-admin">No posts yet.</p>';
+    return;
+  }
+
+  list.innerHTML = sorted.map(p => `
+    <div class="post-list-item ${currentEditId === p.id ? 'active' : ''}" onclick="editPost('${p.id}')">
+      <p class="pli-title">${escHtml(p.title) || '(untitled)'}</p>
+      <p class="pli-meta ${p.status === 'draft' ? 'pli-draft' : ''}">${p.status} · ${fmtDate(p.date) || '—'}</p>
+    </div>
+  `).join('');
+}
+
+// ─── EDITOR ──────────────────────────────────
+function newPost() {
+  currentEditId = null;
+  showEditorForm({
+    id: '', title: '', desc: '', body: '', date: todayISO(), status: 'draft', image: ''
+  });
+}
+
+function editPost(id) {
+  const post = posts.find(p => p.id === id);
+  if (!post) return;
+  currentEditId = id;
+  showEditorForm(post);
+  renderAdminList();
+}
+
+function showEditorForm(post) {
+  document.getElementById('editor-empty').classList.add('hidden');
+  document.getElementById('editor-form').classList.remove('hidden');
+
+  document.getElementById('edit-id').value = post.id || '';
+  document.getElementById('edit-title').value = post.title || '';
+  document.getElementById('edit-desc').value = post.desc || '';
+  document.getElementById('edit-body').value = post.body || '';
+  document.getElementById('edit-date').value = post.date || todayISO();
+  document.getElementById('edit-status').value = post.status || 'draft';
+
+  const preview = document.getElementById('img-preview');
+  const hint = document.querySelector('.upload-hint');
+  if (post.image) {
+    preview.src = post.image;
+    preview.classList.remove('hidden');
+    hint.textContent = 'Click to replace image';
+  } else {
+    preview.classList.add('hidden');
+    hint.textContent = 'Click to upload image';
+  }
+
+  document.getElementById('save-status').classList.add('hidden');
+}
+
+function getFormData() {
+  return {
+    title: document.getElementById('edit-title').value.trim(),
+    desc: document.getElementById('edit-desc').value.trim(),
+    body: document.getElementById('edit-body').value.trim(),
+    date: document.getElementById('edit-date').value,
+    status: document.getElementById('edit-status').value,
+  };
+}
+
+function saveToStore(status) {
+  const data = getFormData();
+  data.status = status;
+
+  const preview = document.getElementById('img-preview');
+  const imgData = preview.classList.contains('hidden') ? '' : preview.src;
+
+  if (!data.title && !data.body) {
+    flashStatus('add a title first');
+    return;
+  }
+
+  if (currentEditId) {
+    const idx = posts.findIndex(p => p.id === currentEditId);
+    if (idx > -1) {
+      posts[idx] = { ...posts[idx], ...data, image: imgData };
+    }
+  } else {
+    const newId = genId();
+    currentEditId = newId;
+    posts.unshift({ id: newId, ...data, image: imgData });
+    document.getElementById('edit-id').value = newId;
+  }
+
+  savePosts();
+  renderAdminList();
+  flashStatus(status === 'draft' ? 'Draft saved' : 'Published ✦');
+}
+
+function saveDraft() { saveToStore('draft'); }
+function publishPost() {
+  document.getElementById('edit-status').value = 'published';
+  saveToStore('published');
+}
+
+function deletePost() {
+  if (!currentEditId) return;
+  if (!confirm('Delete this post permanently?')) return;
+  posts = posts.filter(p => p.id !== currentEditId);
+  savePosts();
+  currentEditId = null;
+  document.getElementById('editor-form').classList.add('hidden');
+  document.getElementById('editor-empty').classList.remove('hidden');
+  renderAdminList();
+}
+
+function flashStatus(msg) {
+  const el = document.getElementById('save-status');
+  el.textContent = msg;
+  el.classList.remove('hidden');
+  setTimeout(() => el.classList.add('hidden'), 3000);
+}
+
+// ─── IMAGE UPLOAD ─────────────────────────────
+function handleImageUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  // Check size (limit ~4MB to keep localStorage happy)
+  if (file.size > 4 * 1024 * 1024) {
+    alert('Image too large. Please use an image under 4MB.');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    const preview = document.getElementById('img-preview');
+    preview.src = ev.target.result;
+    preview.classList.remove('hidden');
+    document.querySelector('.upload-hint').textContent = 'Click to replace image';
+  };
+  reader.readAsDataURL(file);
+}
+
+// ─── UTILS ───────────────────────────────────
+function escHtml(str) {
+  return (str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// ─── INIT ────────────────────────────────────
+loadPosts();
+renderPublicGrid();
+</script>
+</body>
+</html>
